@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Assistant - Header Bypass</title>
+</head>
+<body>
+    <h3>Browser Interface Log:</h3>
+    <textarea id="logArea" rows="15" cols="80" readonly style="font-family: monospace; width: 100%;"></textarea>
 
+    <hr>
+    <div style="padding: 20px; text-align: center;">
+        <p>아래 버튼을 누르면 출처 정보(Referrer)를 완전히 삭제하고 이동합니다.</p>
+        <button id="moveBtn" style="padding: 15px 30px; font-size: 16px; cursor: pointer; background-color: #e74c3c; color: white; border: none; border-radius: 5px;">
+            강제 이동 (Sec-Fetch-Site: none 유도)
+        </button>
+    </div>
+
+<script>
+    const logArea = document.getElementById('logArea');
+    const moveBtn = document.getElementById('moveBtn');
+    const TARGET_URL = "https://browser.samsung.com/ai/index.html?side";
+
+    function appendLog(text) {
+        logArea.value += `[${new Date().toLocaleTimeString()}] ${text}\n\n`;
+        logArea.scrollTop = logArea.scrollHeight;
+    }
+
+    // 초기화 로직 (AiSearch 호출 등)
+    try {
+        if (window.AiSearch) {
+            window.AiSearch.onLoadFinished?.();
+            window.AiSearch.getBrowserAuth("handleBrowserAuthResult");
+            appendLog("AiSearch 초기화 완료.");
+        }
+    } catch (e) { appendLog("Error: " + e.message); }
+
+    moveBtn.addEventListener('click', () => {
+        appendLog("이동을 시작합니다. 팝업 차단 해제가 필요할 수 있습니다.");
+
+        // [핵심] window.open의 3번째 인자에 noopener, noreferrer를 넣어 
+        // 브라우저가 '새로운 세션'처럼 느끼게 만듭니다.
+        // 현재 사이드패널 창 이름을 '_self'로 지정하여 현재 위치에서 엽니다.
+        const newWin = window.open(TARGET_URL, '_self', 'noopener,noreferrer');
+        
+        // 만약 위 방법으로도 cross-site가 뜬다면, 
+        // 마지막 수단으로 메타 태그를 이용한 새로고침을 시도합니다.
+        if (!newWin) {
+            const meta = document.createElement('meta');
+            meta.httpEquiv = "refresh";
+            meta.content = `0; url=${TARGET_URL}`;
+            document.head.appendChild(meta);
+        }
+    });
+
+    window.handleBrowserAuthResult = (p) => appendLog("Auth: " + JSON.stringify(p));
+</script>
+</body>
+</html>
