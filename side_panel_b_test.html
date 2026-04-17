@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Side Panel B Test</title>
+  </head>
+  <body>
+    <h1>B Test Page</h1>
+    <p id="current-origin"></p>
+    <p id="referrer"></p>
+    
+    <p>
+      <a id="return-link" href="">Return to a.test</a>
+    </p>
+
+    <script>
+      function buildCrossSiteUrl(hostname, pathname){
+        return window.location.protocol + "//" + hostname + (window.location.port ? ":" + window.location.port : "") + pathname;
+      }
+
+      document.getElementById("current-origin").textContent = "Current origin: " + window.location.origin;
+      document.getElementById("refferrer").textContent = "Document referrer: " + (document.referrer || "<empty>");
+      document.getElementById("return-link").href = buildCrossSiteUrl("a.test", "/side_panel_a_test.html");
+    </script>
+  </body>
+</html>
