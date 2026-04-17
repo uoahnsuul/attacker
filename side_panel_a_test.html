@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Side Panel A Test</title>
+  </head>
+  <body>
+    <h1>A Test Page</h1>
+    <p id="current-origin"></p>
+    <p id="target-url"></p>
+
+    <button id="delayed-redirect" type="button">Redirect to b.test after 1s</button>
+    <p>
+      <a id="cross-site-link" href="">Open b.test by link</a>
+    </p>
+
+    <script>
+      function buildCrossSiteUrl(hostname, pathname){
+        return window.location.protocol + "//" + hostname + (window.location.port ? ":" + window.location.port : "") + pathname;
+      }
+
+      const targetUrl = buildCrossSiteUrl("b.test", "/side_panel_b_test.html");
+      document.getElementById("current-origin").textContent = "Current origin: " + window.location.origin;
+      document.getElementById("target-url").textContent = "Target URL: " + targetUrl;
+      document.getElementById("cross-site-link").href = targetUrl;
+
+      document.getElementById("delayed-redirect").addEventListener("click", () => {
+        window.setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
