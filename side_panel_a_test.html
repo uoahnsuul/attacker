@@ -18,7 +18,7 @@
         return window.location.protocol + "//" + hostname + (window.location.port ? ":" + window.location.port : "") + pathname;
       }
 
-      const targetUrl = buildCrossSiteUrl("b.test", "/side_panel_b_test.html");
+      const targetUrl = "https://uoahnsuul.github.io/attacker/side_panel_b_test.html";
       document.getElementById("current-origin").textContent = "Current origin: " + window.location.origin;
       document.getElementById("target-url").textContent = "Target URL: " + targetUrl;
       document.getElementById("cross-site-link").href = targetUrl;
