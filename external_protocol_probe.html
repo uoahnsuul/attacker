@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <h1>External Protocol Probe</h1>
+    <p id="intent-bin">Open intent://</p>
+    <p id="custom-bin">Oepn mxprobe://</p>
+
+    <script>
+      document.getElementById("intent-bin").onclick = () => {
+        location.href = "intent://probe#Intent;scheme=mxprobe;end";
+      }
+      document.getElementById("custom-bin").onclick = () => {
+        location.href = "mxprobe://hello";
+      }
+    </script>
+  </body>
+</html>
