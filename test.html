@@ -18,6 +18,9 @@
           return;
         }
         const [h] =await showOpenFilePicker();
+
+        const status = await h.queryPermission({mode: "readwrite"});
+        console.log("readwrite permission:", status);
         log("query rw: " + await h.queryPermission({mode: "readwrite"}));
         const w = await h.createWritable();
         await w.write("SY_");
