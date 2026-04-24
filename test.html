@@ -1,20 +1,33 @@
 <html>
   <meta charset="utf-8">
   <body>
-    <p>1) Open File Picker -> 기존 파일 하나 선택</p>
-    <p>2) 자동으로 아래가 실행됩니다 (또는 버튼)</p>
+    <p>1) 아래 버튼 누른 뒤, 2) 기존 파일 하나 선택</p>
+    <button id="go" type="button"> 파일 열기 + 쓰기 테스트 </button>
     <pre id="log"></pre>
     <script>
-      const log = (m) => {document.getElementById("log").textContent += m + "\n"; console.log(m);}
-      (async () => {
-        if(!window.showOpenFilePicker) {log("showOpenFilePicker not supported"); return;}
+      const log = (m) => {
+        const el = document.getElementById("log");
+        el.textContent += m + "\n";
+        console.log(m);
+      };
+
+      document.getElementById("go").addEventListener("click", async () => {
+        try{
+        if(!window.showOpenFilePicker) {
+          log("showOpenFilePicker not supported"); 
+          return;
+        }
         const [h] =await showOpenFilePicker();
         log("query rw: " + await h.queryPermission({mode: "readwrite"}));
         const w = await h.createWritable();
         await w.write("SY_");
         await w.close();
         log("write done");
-      })();
+        }
+        catch(e){
+          log("error: " + (e && e.name) + " " + (e && e.message));
+        }
+      });
     </script>
   </body>
 </html>
