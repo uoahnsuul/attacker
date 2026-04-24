@@ -1,0 +1,20 @@
+<html>
+  <meta charset="utf-8">
+  <body>
+    <p>1) Open File Picker -> 기존 파일 하나 선택</p>
+    <p>2) 자동으로 아래가 실행됩니다 (또는 버튼)</p>
+    <pre id="log"></pre>
+    <script>
+      const log = (m) => {document.getElementById("log").textContent += m + "\n"; console.log(m);}
+      (async () => {
+        if(!window.showOpenFilePicker) {log("showOpenFilePicker not supported"); return;}
+        const [h] =await showOpenFilePicker();
+        log("query rw: " + await h.queryPermission({mode: "readwrite"}));
+        const w = await h.createWritable();
+        await w.write("SY_");
+        await w.close();
+        log("write done");
+      })();
+    </script>
+  </body>
+</html>
